@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+excluded=jasmine//*\:node_modules//*\:public/vendor//*
+globals=$\: false, FieldModel\: false, FieldView\: false,\nit\: false, describe\: false, beforeEach\: false, runs\: false, expect\: false,\nwaitsFor\: false, afterEach\: false,\nsinon\:false\n
+included=*//*.js
+options=undef\: true, browser\: true, node\: true, loopfunc\:false,\n
+projectSpecificOptions=true

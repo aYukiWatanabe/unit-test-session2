@@ -1,35 +1,58 @@
+var express = require('express');
+var path = require('path');
+var Field = require('simple-mine').Field;
 
-/**
- * Module dependencies.
- */
-
-var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
-  , http = require('http')
-  , path = require('path');
+var FIELD_SIZE = 3;
 
 var app = express();
+var field = null;
 
-// all environments
-app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
-app.use(express.favicon());
-app.use(express.logger('dev'));
+app.use('/public', express.static(path.join(__dirname, 'public')))
+app.use('/client_spec', express.static(path.join(__dirname, 'client_spec')))
 app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
 
-// development only
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+function getPos(req) {
+  return {
+    x: +req.query.x || +req.body.x || 0,
+    y: +req.query.y || +req.body.y || 0
+  };
+}
+function setResponse(res, data) {
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify(data));
 }
 
-app.get('/', routes.index);
-app.get('/users', user.list);
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+app.post('/api/field', function(req, res) {
+  field = new Field(FIELD_SIZE, FIELD_SIZE);
+
+  field.setMine(
+    ~~(Math.random() * FIELD_SIZE),
+    ~~(Math.random() * FIELD_SIZE)
+  );
+
+  setResponse(res, {
+    xSize: FIELD_SIZE,
+    ySize: FIELD_SIZE
+  });
 });
+
+app.post('/api/field/masses/open', function(req, res) {
+  var pos = getPos(req);
+  var isMine = field.hasMine(pos.x, pos.y);
+
+  setResponse(res, { isMine: isMine });
+});
+
+app.get('/api/debug/field/map', function(req, res) {
+  setResponse(res, field.getMap());
+});
+
+var server = app.listen(3000);
+
+exports.quit = function() {
+  server.close();
+}
+exports.getField = function() {
+  return field;
+}

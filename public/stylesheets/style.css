@@ -1,8 +1,22 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.field {
+  perspective: 700;
+  width: 300px;
+  height: 300px;
+  border: 2px #aaa outset;
+  display: inline-block;
+  line-height: 10px;
 }
 
-a {
-  color: #00B7FF;
+.mass {
+  background-color: #aaa;
+  border: 4px #555 outset;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.has-mine {
+  background-color: red;
+}
+.is-opened {
+  border: #aaa solid;
 }

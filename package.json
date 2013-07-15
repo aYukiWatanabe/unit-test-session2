@@ -1,5 +1,5 @@
 {
-  "name": "application-name",
+  "name": "simple-mile-web",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -7,6 +7,10 @@
   },
   "dependencies": {
     "express": "3.3.4",
-    "jade": "*"
+    "simple-mine": "git://github.com/ndruger/unit-test-session1.git#master"
+  },
+  "devDependencies": {
+    "jasmine-node": ">= 1.8.1",
+    "selenium-webdriver": ">= 2.33.0"
   }
 }
