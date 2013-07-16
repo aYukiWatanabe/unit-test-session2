@@ -47,6 +47,10 @@ describe('In main page,', function() {
     });
   });
 
+  /*
+   * JasmineにはafterAllがない。とりあえず暫定
+   * https://github.com/pivotal/jasmine/pull/56
+   */
   it('[afterAll]', function() {
     driver.quit();
     server.stop();
