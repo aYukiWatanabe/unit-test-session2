@@ -61,7 +61,6 @@ describe('FieldModel', function() {
   /*
    * 演習2. openMass()のテストとして、下記のテストケースの一部を実装する
    */
-  /*
   it('should open mine mass in the case of that server responses mine', function() {
     var map = null;
     // サーバ側のフィールドマップをデバッグ用メソッドで取得
@@ -74,10 +73,37 @@ describe('FieldModel', function() {
       return map;
     });
 
+    function findMineMass(map) {
+      for (var x = 0; x < fieldModel.xSize; x++) {
+        for (var y = 0; y < fieldModel.ySize; y++) {
+          if (map[x][y] & FieldModel.massFlags.MINE) {
+            return { x: x, y: y };
+          }
+        }
+      }
+    }
+
     // ここから先を実装する
     // mapで地雷があるところをopenMass()で開いて、getMassFlag()で地雷が地雷を返すことを確認する
+
+    var mineMass;
+    var isMassOpened = false;
+
     runs(function() {
+      mineMass = findMineMass(map);
+      fieldModel.openMass({
+        x: mineMass.x,
+        y: mineMass.y,
+        proc: function() { isMassOpened = true; }
+      });
+    });
+
+    waitsFor(function() {
+      return isMassOpened;
+    });
+
+    runs(function() {
+      expect(fieldModel.getMassFlag(mineMass.x, mineMass.y)).toEqual(FieldModel.massFlags.OPENED | FieldModel.massFlags.MINE);
     });
   });
-  */
 });

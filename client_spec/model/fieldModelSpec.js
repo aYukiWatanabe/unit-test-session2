@@ -63,7 +63,6 @@ describe('FieldModel with mock', function() {
   /*
    * 演習1. openMass()のテストとして、下記のテストケースの一部を実装する
    */
-  /*
   it('should open mine mass in the case of that server responses mine', function() {
     // 途中まではサンプルと同じ。通常は他のテストケースと共通化する
     var size = ~~(Math.random() * 10) + 1;
@@ -99,6 +98,30 @@ describe('FieldModel with mock', function() {
     // ここから先を実装する
     // 地雷を返すダミーのレスポンスを設定して、openMass()を呼んで、getMassFlag()で地雷が地雷を返すことを確認する
     // それぞれ、runs()内に書く必要があることに注意
+
+    var isMassOpened = false;
+    var x = 0, y = 1;
+
+    runs(function() {
+      server.respondWith([
+        200, {}, JSON.stringify({ isMine: true })
+      ]);
+
+      fieldModel.openMass({
+        x: x,
+        y: y,
+        proc: function() { isMassOpened = true; }
+      });
+
+      server.respond();
+    });
+
+    waitsFor(function() {
+      return isMassOpened;
+    });
+
+    runs(function() {
+      expect(fieldModel.getMassFlag(x, y)).toEqual(FieldModel.massFlags.OPENED | FieldModel.massFlags.MINE);
+    });
   });
-  */
 });
