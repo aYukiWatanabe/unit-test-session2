@@ -46,9 +46,14 @@ describe('FieldModel', function() {
 
     // サーバ側のフィールドマップに、地雷が1以上存在すること確認
     runs(function() {
-      var mines = map.filter(function(massFlag) {
-        return massFlag & FieldModel.massFlags.MINE;
-      });
+      var mines = [];
+      for (var x = 0; x < fieldModel.xSize; x++) {
+        for (var y = 0; y < fieldModel.ySize; y++) {
+          if (map[x][y] & FieldModel.massFlags.MINE) {
+            mines.push(map[x][y]);
+          }
+        }
+      }
       expect(mines.length).toNotEqual(0);
     });
   });
